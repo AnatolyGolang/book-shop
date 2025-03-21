@@ -1,6 +1,8 @@
 package models
 
-import "book-shop/internal/app/services/models"
+import (
+	"book-shop/internal/app/services/models"
+)
 
 type User struct {
 	Email    string `json:"email"`

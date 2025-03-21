@@ -2,6 +2,7 @@ package handlers
 
 import (
 	he "book-shop/internal/app/http/handlers/errors"
+	"book-shop/internal/app/utils"
 
 	"context"
 	"net/http"
@@ -10,8 +11,8 @@ import (
 
 func (h HttpServer) CheckAdmin(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get(AuthorizationHeader)
-		token = strings.TrimSpace(strings.TrimPrefix(token, BearerPrefix))
+		token := r.Header.Get(utils.AuthorizationHeader)
+		token = strings.TrimSpace(strings.TrimPrefix(token, utils.BearerPrefix))
 		user, err := h.jwtService.GetUser(r.Context(), token)
 
 		if err != nil {
@@ -29,15 +30,15 @@ func (h HttpServer) CheckAdmin(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), ContextUserKey, user)
+		ctx := context.WithValue(r.Context(), utils.ContextUserKey, user)
 		next(w, r.WithContext(ctx))
 	}
 }
 
 func (h HttpServer) CheckAuthorizedUser(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get(AuthorizationHeader)
-		token = strings.TrimSpace(strings.TrimPrefix(token, BearerPrefix))
+		token := r.Header.Get(utils.AuthorizationHeader)
+		token = strings.TrimSpace(strings.TrimPrefix(token, utils.BearerPrefix))
 		user, err := h.jwtService.GetUser(r.Context(), token)
 
 		if err != nil {
@@ -50,7 +51,7 @@ func (h HttpServer) CheckAuthorizedUser(next http.HandlerFunc) http.HandlerFunc 
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), ContextUserKey, user)
+		ctx := context.WithValue(r.Context(), utils.ContextUserKey, user)
 		next(w, r.WithContext(ctx))
 	}
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"book-shop/config"
+	conf "book-shop/config"
 	"book-shop/internal/app/http/handlers"
 	"book-shop/internal/app/logger"
 	"book-shop/internal/app/repositories"
@@ -30,7 +30,7 @@ func main() {
 
 func run() error {
 	background := context.Background()
-	loadConfig, err := config.LoadConfig()
+	config, err := conf.LoadConfig()
 	if err != nil {
 		return fmt.Errorf("run: error load config %w", err)
 	}
@@ -39,14 +39,18 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("run: error setup logger %w", err)
 	}
-	defer logger.Logger.Sync()
+	defer func() {
+		if err := logger.Logger.Sync(); err != nil {
+			log.Printf("error syncing logger %v", err)
+		}
+	}()
 
-	err = RunMigrations(loadConfig.DSN, loadConfig.MigrationsPath)
+	err = RunMigrations(config.DSN, config.MigrationsPath)
 	if err != nil {
 		return fmt.Errorf("run: error run migration %w", err)
 	}
 
-	dbCon, err := postgres.Dial(background, loadConfig.DSN)
+	dbCon, err := postgres.Dial(background, config.DSN)
 	if err != nil {
 		return fmt.Errorf("run: error get connection %w", err)
 	}
@@ -60,37 +64,40 @@ func run() error {
 	userRepository := repositories.NewUserRepository(dbCon)
 	userService := services.NewUserService(userRepository)
 
+	cartRepository := repositories.NewCartRepository(dbCon)
+	cartService := services.NewCartService(cartRepository)
+
 	tokenRepository := repositories.NewTokenRepository(dbCon)
 	jwtService := services.NewJWTService(tokenRepository)
 
-	httpServer := handlers.NewHttpServer(bookService, categoryService, userService, jwtService)
+	httpServer := handlers.NewHttpServer(bookService, categoryService, userService, cartService, jwtService)
 
 	router := mux.NewRouter()
 
-	//Сделал все по книгам, пока без проверки админ или не админ
-	router.HandleFunc("/book/{book_id}", httpServer.GetBook).Methods(http.MethodGet)                              //получение книги
-	router.HandleFunc("/books", httpServer.GetBooksByCategories).Methods(http.MethodGet)                          //получение страницы
-	router.HandleFunc("/book", httpServer.CheckAdmin(httpServer.CreateBook)).Methods(http.MethodPost)             //Admin validation
-	router.HandleFunc("/book/{book_id}", httpServer.CheckAdmin(httpServer.UpdateBook)).Methods(http.MethodPut)    //admin validation
-	router.HandleFunc("/book/{book_id}", httpServer.CheckAdmin(httpServer.DeleteBook)).Methods(http.MethodDelete) //admin validation
+	router.HandleFunc("/book/{book_id}", httpServer.GetBook).Methods(http.MethodGet)
+	router.HandleFunc("/books", httpServer.GetBooksByCategories).Methods(http.MethodGet)
+	router.HandleFunc("/book", httpServer.CheckAdmin(httpServer.CreateBook)).Methods(http.MethodPost)
+	router.HandleFunc("/book/{book_id}", httpServer.CheckAdmin(httpServer.UpdateBook)).Methods(http.MethodPut)
+	router.HandleFunc("/book/{book_id}", httpServer.CheckAdmin(httpServer.DeleteBook)).Methods(http.MethodDelete)
 
-	//Сделал все по категориям, пока без проверки админ или нет
 	router.HandleFunc("/category", httpServer.CheckAdmin(httpServer.CreateCategory)).Methods(http.MethodPost)
 	router.HandleFunc("/categories", httpServer.GetCategories).Methods(http.MethodGet)
 	router.HandleFunc("/category/{category_id}", httpServer.CheckAdmin(httpServer.GetCategory)).Methods(http.MethodGet)
 	router.HandleFunc("/category/{category_id}", httpServer.CheckAdmin(httpServer.UpdateCategory)).Methods(http.MethodPut)
 	router.HandleFunc("/category/{category_id}", httpServer.CheckAdmin(httpServer.DeleteCategory)).Methods(http.MethodDelete)
 
-	//Регистрация и аутентификация
+	router.HandleFunc("/cart/add", httpServer.CheckAuthorizedUser(httpServer.AddToCart)).Methods(http.MethodPost)
+
 	router.HandleFunc("/signup", httpServer.SignUp).Methods(http.MethodPost)
 	router.HandleFunc("/signin", httpServer.SignIn).Methods(http.MethodPost)
 	router.HandleFunc("/logout", httpServer.CheckAuthorizedUser(httpServer.Logout)).Methods(http.MethodPost)
 
 	srv := &http.Server{
-		Addr:    "localhost:8080",
+		Addr:    config.HttpHost + ":" + config.HttpPort,
 		Handler: router,
 	}
 
+	cartService.CartCleanupScheduler()
 	jwtService.StartTokenCleanupScheduler()
 
 	// listen to OS signals and gracefully shutdown HTTP server
@@ -107,10 +114,7 @@ func run() error {
 		close(stopped)
 	}()
 
-	//log.Printf("Starting HTTP server on %s", cfg.HTTPAddr)
-
-	// start HTTP server
-	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
+	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 		log.Fatalf("HTTP server ListenAndServe Error: %v", err)
 	}
 

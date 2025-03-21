@@ -105,13 +105,11 @@ func (r *BookRepositoryImpl) GetBooksByCategories(ctx context.Context, categoryI
 		return nil, 0, fmt.Errorf("categoryIDs cannot be empty")
 	}
 
-	query := fmt.Sprintf(
-		`SELECT id, title, author, category_id, price, amount, year, created_at, updated_at 
-        FROM books 
-        WHERE category_id = ANY($1) 
-        ORDER BY id 
-        LIMIT $2 OFFSET $3`,
-	)
+	query := `SELECT id, title, author, category_id, price, amount, year, created_at, updated_at 
+        	  FROM books 
+        	  WHERE category_id = ANY($1) 
+              ORDER BY id 
+              LIMIT $2 OFFSET $3`
 
 	rows, err := r.db.Query(ctx, query, categoryIDs, limit, offset)
 	if err != nil {

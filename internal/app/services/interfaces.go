@@ -33,3 +33,8 @@ type JWTService interface {
 	RevokeToken(ctx context.Context, token string) error
 	StartTokenCleanupScheduler()
 }
+
+type CartService interface {
+	UpdateCart(ctx context.Context, userID int, bookIds []int) error
+	CartCleanupScheduler()
+}

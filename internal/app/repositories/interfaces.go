@@ -30,6 +30,8 @@ type UserRepository interface {
 }
 
 type CartRepository interface {
+	CleanupExpiredCartItems(ctx context.Context) error
+	UpdateCart(ctx context.Context, userID int, bookIds []int) error
 }
 
 type TokenRepository interface {

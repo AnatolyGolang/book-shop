@@ -1,0 +1,2 @@
+TRUNCATE TABLE categories;
+TRUNCATE TABLE books;

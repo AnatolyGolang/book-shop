@@ -2,6 +2,9 @@ package models
 
 import (
 	"book-shop/internal/app/repositories/models"
+	"book-shop/internal/app/utils"
+	"context"
+	"fmt"
 	"time"
 )
 
@@ -23,4 +26,16 @@ func ToDomainUser(u models.User) DomainUser {
 		CreatedAt: u.CreatedAt,
 		UpdatedAt: u.UpdatedAt,
 	}
+}
+
+func GetUserFromContext(ctx context.Context) (DomainUser, error) {
+	contextUser := ctx.Value(utils.ContextUserKey)
+	if contextUser == nil {
+		return DomainUser{}, fmt.Errorf("no user in context")
+	}
+	user, ok := contextUser.(DomainUser)
+	if !ok {
+		return DomainUser{}, fmt.Errorf("no user in context")
+	}
+	return user, nil
 }

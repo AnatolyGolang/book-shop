@@ -22,13 +22,13 @@ CREATE TABLE IF NOT EXISTS books
     title       TEXT                                   NOT NULL,
     author      TEXT                                   NOT NULL,
     year        INT                                    NOT NULL CHECK (books.year >= 0),
-    price       FLOAT                                  NOT NULL CHECK (books.price >= 0),
+    price       INT                                    NOT NULL CHECK (books.price >= 0),
     amount      INT                                    NOT NULL CHECK (books.amount >= 0),
     category_id INT                                    NOT NULL,
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     updated_at  TIMESTAMP WITH TIME ZONE,
     FOREIGN KEY (category_id) REFERENCES categories (id),
-    CONSTRAINT вввввввunique_author_title UNIQUE(author, title)
+    CONSTRAINT unique_author_title UNIQUE(author, title)
 );
 
 CREATE TABLE IF NOT EXISTS carts
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS carts
     user_id    INTEGER                                NOT NULL PRIMARY KEY,
     book_ids   INTEGER[]                              NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE
+    updated_at TIMESTAMP WITH TIME ZONE,
 
     FOREIGN KEY (user_id) REFERENCES users (id)
 );

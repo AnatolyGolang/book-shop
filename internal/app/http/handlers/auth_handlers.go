@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"book-shop/internal/app/http/handlers/errors"
-	models2 "book-shop/internal/app/http/handlers/models"
+	"book-shop/internal/app/http/handlers/models"
 	"book-shop/internal/app/utils"
 	"encoding/json"
 	"net/http"
@@ -10,7 +10,7 @@ import (
 )
 
 func (h HttpServer) SignUp(w http.ResponseWriter, r *http.Request) {
-	var authRequest models2.AuthRequest
+	var authRequest models.AuthRequest
 	if err := json.NewDecoder(r.Body).Decode(&authRequest); err != nil {
 		errors.BadRequest("invalid-json", err, w, r)
 		return
@@ -27,7 +27,7 @@ func (h HttpServer) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = h.userService.CreateUser(r.Context(), models2.ToDomainUser(authRequest.Email, hashedPassword))
+	_, err = h.userService.CreateUser(r.Context(), models.ToDomainUser(authRequest.Email, hashedPassword))
 	if err != nil {
 		errors.RespondWithError(err, w, r)
 		return
@@ -37,7 +37,7 @@ func (h HttpServer) SignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h HttpServer) SignIn(w http.ResponseWriter, r *http.Request) {
-	var authRequest models2.AuthRequest
+	var authRequest models.AuthRequest
 	if err := json.NewDecoder(r.Body).Decode(&authRequest); err != nil {
 		errors.BadRequest("invalid-json", err, w, r)
 		return
@@ -69,18 +69,18 @@ func (h HttpServer) SignIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h HttpServer) Logout(w http.ResponseWriter, r *http.Request) {
-	authHeader := r.Header.Get(AuthorizationHeader)
+	authHeader := r.Header.Get(utils.AuthorizationHeader)
 	if authHeader == "" {
 		errors.BadRequest("missing-token", nil, w, r)
 		return
 	}
 
-	if !strings.HasPrefix(authHeader, BearerPrefix) {
+	if !strings.HasPrefix(authHeader, utils.BearerPrefix) {
 		errors.BadRequest("invalid-token-format", nil, w, r)
 		return
 	}
 
-	token := strings.TrimSpace(strings.TrimPrefix(authHeader, BearerPrefix))
+	token := strings.TrimSpace(strings.TrimPrefix(authHeader, utils.BearerPrefix))
 	if token == "" {
 		errors.BadRequest("empty-token", nil, w, r)
 		return
