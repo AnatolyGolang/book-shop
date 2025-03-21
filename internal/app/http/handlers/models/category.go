@@ -1,8 +1,9 @@
 package models
 
 import (
-	"book-shop/internal/app/services/models"
 	"fmt"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/services/models"
 )
 
 type CategoryCreateRequest struct {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"book-shop/internal/pkg/postgres"
+	"github.com/AnatolyGolang/book-shop/internal/pkg/postgres"
 )
 
 type TokenRepositoryImpl struct {

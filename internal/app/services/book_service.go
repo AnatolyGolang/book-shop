@@ -1,9 +1,10 @@
 package services
 
 import (
-	r "book-shop/internal/app/repositories"
-	"book-shop/internal/app/services/models"
 	"context"
+
+	r "github.com/AnatolyGolang/book-shop/internal/app/repositories"
+	"github.com/AnatolyGolang/book-shop/internal/app/services/models"
 )
 
 type BookServiceImpl struct {

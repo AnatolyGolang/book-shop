@@ -1,11 +1,12 @@
 package models
 
 import (
-	"book-shop/internal/app/repositories/models"
-	"book-shop/internal/app/utils"
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/repositories/models"
+	"github.com/AnatolyGolang/book-shop/internal/app/utils"
 )
 
 type DomainUser struct {

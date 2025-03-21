@@ -1,13 +1,14 @@
 package repositories
 
 import (
-	rm "book-shop/internal/app/repositories/models"
-	se "book-shop/internal/app/services/errors"
-	sm "book-shop/internal/app/services/models"
-	"book-shop/internal/pkg/postgres"
 	"context"
 	"errors"
 	"fmt"
+
+	rm "github.com/AnatolyGolang/book-shop/internal/app/repositories/models"
+	se "github.com/AnatolyGolang/book-shop/internal/app/services/errors"
+	sm "github.com/AnatolyGolang/book-shop/internal/app/services/models"
+	"github.com/AnatolyGolang/book-shop/internal/pkg/postgres"
 
 	"github.com/jackc/pgx/v5"
 )

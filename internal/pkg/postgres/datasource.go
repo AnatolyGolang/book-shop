@@ -1,9 +1,10 @@
 package postgres
 
 import (
-	"book-shop/internal/app/logger"
 	"context"
 	"fmt"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/logger"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -20,7 +21,6 @@ func Dial(ctx context.Context, dsn string) (*DBConnection, error) {
 
 	err = dbPool.Ping(ctx)
 	if err != nil {
-		dbPool.Close()
 		return nil, fmt.Errorf("can not PING db: %w", err)
 	}
 

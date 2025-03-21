@@ -1,6 +1,6 @@
 package handlers
 
-import "book-shop/internal/app/services"
+import "github.com/AnatolyGolang/book-shop/internal/app/services"
 
 type HttpServer struct {
 	bookService     services.BookService

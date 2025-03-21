@@ -1,10 +1,11 @@
 package repositories
 
 import (
-	"book-shop/internal/app/repositories/models"
-	domain "book-shop/internal/app/services/models"
 	"context"
 	"time"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/repositories/models"
+	domain "github.com/AnatolyGolang/book-shop/internal/app/services/models"
 )
 
 type BookRepository interface {

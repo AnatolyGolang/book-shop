@@ -1,8 +1,9 @@
 package services
 
 import (
-	"book-shop/internal/app/services/models"
 	"context"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/services/models"
 )
 
 type BookService interface {

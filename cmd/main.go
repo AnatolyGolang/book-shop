@@ -1,12 +1,6 @@
 package main
 
 import (
-	conf "book-shop/config"
-	"book-shop/internal/app/http/handlers"
-	"book-shop/internal/app/logger"
-	"book-shop/internal/app/repositories"
-	"book-shop/internal/app/services"
-	"book-shop/internal/pkg/postgres"
 	"context"
 	"errors"
 	"fmt"
@@ -16,6 +10,13 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	conf "github.com/AnatolyGolang/book-shop/config"
+	"github.com/AnatolyGolang/book-shop/internal/app/http/handlers"
+	"github.com/AnatolyGolang/book-shop/internal/app/logger"
+	"github.com/AnatolyGolang/book-shop/internal/app/repositories"
+	"github.com/AnatolyGolang/book-shop/internal/app/services"
+	"github.com/AnatolyGolang/book-shop/internal/pkg/postgres"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"

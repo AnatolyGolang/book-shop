@@ -1,14 +1,15 @@
 package handlers
 
 import (
-	he "book-shop/internal/app/http/handlers/errors"
-	"book-shop/internal/app/http/handlers/models"
-	se "book-shop/internal/app/services/errors"
 	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
 	"strings"
+
+	he "github.com/AnatolyGolang/book-shop/internal/app/http/handlers/errors"
+	"github.com/AnatolyGolang/book-shop/internal/app/http/handlers/models"
+	se "github.com/AnatolyGolang/book-shop/internal/app/services/errors"
 
 	"github.com/gorilla/mux"
 )

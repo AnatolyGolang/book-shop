@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	he "book-shop/internal/app/http/handlers/errors"
-	"book-shop/internal/app/utils"
+	he "github.com/AnatolyGolang/book-shop/internal/app/http/handlers/errors"
+	"github.com/AnatolyGolang/book-shop/internal/app/utils"
 
 	"context"
 	"net/http"

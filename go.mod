@@ -1,4 +1,4 @@
-module book-shop
+module github.com/AnatolyGolang/book-shop
 
 go 1.23.0
 

@@ -1,10 +1,11 @@
 package repositories
 
 import (
-	"book-shop/internal/app/logger"
-	"book-shop/internal/pkg/postgres"
 	"context"
 	"fmt"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/logger"
+	"github.com/AnatolyGolang/book-shop/internal/pkg/postgres"
 
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"

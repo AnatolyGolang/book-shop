@@ -1,13 +1,14 @@
 package services
 
 import (
-	r "book-shop/internal/app/repositories"
-	sm "book-shop/internal/app/services/models"
 	"context"
 	"errors"
 	"fmt"
 	"log"
 	"time"
+
+	r "github.com/AnatolyGolang/book-shop/internal/app/repositories"
+	sm "github.com/AnatolyGolang/book-shop/internal/app/services/models"
 
 	"github.com/golang-jwt/jwt/v5"
 )

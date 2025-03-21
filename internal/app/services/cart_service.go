@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	r "book-shop/internal/app/repositories"
+	r "github.com/AnatolyGolang/book-shop/internal/app/repositories"
 )
 
 type CartServiceImpl struct {

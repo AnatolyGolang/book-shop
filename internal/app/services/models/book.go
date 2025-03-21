@@ -1,8 +1,9 @@
 package models
 
 import (
-	"book-shop/internal/app/repositories/models"
 	"time"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/repositories/models"
 )
 
 type DomainBook struct {

@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	he "book-shop/internal/app/http/handlers/errors"
-	"book-shop/internal/app/http/handlers/models"
-	se "book-shop/internal/app/services/models"
 	"encoding/json"
 	"net/http"
+
+	he "github.com/AnatolyGolang/book-shop/internal/app/http/handlers/errors"
+	"github.com/AnatolyGolang/book-shop/internal/app/http/handlers/models"
+	se "github.com/AnatolyGolang/book-shop/internal/app/services/models"
 )
 
 func (h HttpServer) AddToCart(w http.ResponseWriter, r *http.Request) {

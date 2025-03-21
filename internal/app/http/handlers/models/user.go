@@ -1,7 +1,7 @@
 package models
 
 import (
-	"book-shop/internal/app/services/models"
+	"github.com/AnatolyGolang/book-shop/internal/app/services/models"
 )
 
 type User struct {

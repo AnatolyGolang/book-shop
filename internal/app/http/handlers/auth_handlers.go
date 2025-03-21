@@ -1,12 +1,13 @@
 package handlers
 
 import (
-	"book-shop/internal/app/http/handlers/errors"
-	"book-shop/internal/app/http/handlers/models"
-	"book-shop/internal/app/utils"
 	"encoding/json"
 	"net/http"
 	"strings"
+
+	"github.com/AnatolyGolang/book-shop/internal/app/http/handlers/errors"
+	"github.com/AnatolyGolang/book-shop/internal/app/http/handlers/models"
+	"github.com/AnatolyGolang/book-shop/internal/app/utils"
 )
 
 func (h HttpServer) SignUp(w http.ResponseWriter, r *http.Request) {
