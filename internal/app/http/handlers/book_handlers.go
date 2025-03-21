@@ -6,10 +6,11 @@ import (
 	se "book-shop/internal/app/services/errors"
 	"encoding/json"
 	"errors"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 const (

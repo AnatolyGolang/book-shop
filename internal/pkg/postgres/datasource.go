@@ -4,6 +4,7 @@ import (
 	"book-shop/internal/app/logger"
 	"context"
 	"fmt"
+
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

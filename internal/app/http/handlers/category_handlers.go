@@ -6,9 +6,10 @@ import (
 	se "book-shop/internal/app/services/errors"
 	"encoding/json"
 	"errors"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func (h HttpServer) CreateCategory(w http.ResponseWriter, r *http.Request) {

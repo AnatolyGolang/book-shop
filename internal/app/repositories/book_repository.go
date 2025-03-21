@@ -2,6 +2,7 @@ package repositories
 
 import (
 	rm "book-shop/internal/app/repositories/models"
+	se "book-shop/internal/app/services/errors"
 	sm "book-shop/internal/app/services/models"
 	"book-shop/internal/pkg/postgres"
 	"context"
@@ -53,7 +54,7 @@ func (r *BookRepositoryImpl) GetBook(ctx context.Context, id int) (rm.Book, erro
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return rm.Book{}, fmt.Errorf("book not found")
+			return rm.Book{}, se.ErrNotFound
 		}
 		return rm.Book{}, fmt.Errorf("failed to get a book: %w", err)
 	}
@@ -73,7 +74,7 @@ func (r *BookRepositoryImpl) UpdateBook(ctx context.Context, id int, book sm.Dom
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return rm.Book{}, fmt.Errorf("book not found")
+			return rm.Book{}, se.ErrNotFound
 		}
 		return rm.Book{}, fmt.Errorf("failed to update book: %w", err)
 	}
@@ -94,7 +95,7 @@ func (r *BookRepositoryImpl) DeleteBook(ctx context.Context, id int) error {
 	}
 
 	if result.RowsAffected() == 0 {
-		return fmt.Errorf("book not found")
+		return se.ErrNotFound
 	}
 
 	return nil
